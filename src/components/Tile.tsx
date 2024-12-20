@@ -1,45 +1,32 @@
-import React from 'react';
+import React from "react";
+import { Tile as TileType } from "./Grid";  // Import the Tile interface from Grid
 
+// Define the props expected by the Tile component
 interface TileProps {
-  tile: {
-    row: number;
-    col: number;
-    state: string;
-  };
-  setGrid: React.Dispatch<React.SetStateAction<any[][]>>;
-  grid: any[][];
+  tile: TileType;    // Pass the tile object as a prop
+  onClick: () => void;  // Function to handle click
 }
 
-function Tile({ tile, setGrid, grid }: TileProps) {
-  const { row, col, state } = tile;
-
-  const handleClick = () => {
-    setGrid(prevGrid => {
-      const newGrid = [...prevGrid];
-      const newTile = { ...newGrid[row][col] };
-
-      // Toggle between regular and blocked state
-      newTile.state = newTile.state === 'regular' ? 'blocked' : 'regular';
-      newGrid[row][col] = newTile;
-
-      return newGrid;
-    });
+const Tile: React.FC<TileProps> = ({ tile, onClick }) => {
+  // Function to get the background color based on tile state
+  const getBackgroundColor = (): string => {
+    if (tile.isStart) return "green"; // Start tile
+    if (tile.isEnd) return "red";     // End tile
+    if (tile.isWall) return "black";  // Wall tile
+    return "white";                   // Default tile
   };
 
-  const getTileClass = () => {
-    switch (state) {
-      case 'blocked':
-        return 'tile blocked';
-      case 'start':
-        return 'tile start';
-      case 'end':
-        return 'tile end';
-      default:
-        return 'tile regular';
-    }
-  };
-
-  return <div className={getTileClass()} onClick={handleClick}></div>;
-}
+  return (
+    <div
+      onClick={onClick}  // Handle click event
+      style={{
+        width: 20,
+        height: 20,
+        backgroundColor: getBackgroundColor(),  // Set background color
+        border: "1px solid black",  // Border for each tile
+      }}
+    ></div>
+  );
+};
 
 export default Tile;
