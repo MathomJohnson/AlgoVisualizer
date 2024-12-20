@@ -10,6 +10,8 @@ export interface Tile {
   isEnd: boolean;
   isWall: boolean;
   isVisited: boolean;
+  isFrontier: boolean;
+  isPath: boolean,
   distance: number;
   previousTile?: Tile | null;
 }
@@ -27,6 +29,8 @@ const Grid: React.FC = () => {
         isEnd: false,
         isWall: false,
         isVisited: false,
+        isFrontier: false,
+        isPath: false,
         distance: Infinity,
         previousTile: null,
       }))
@@ -65,18 +69,18 @@ const Grid: React.FC = () => {
   };
 
   // Trigger BFS or DFS
-  const handleSearch = (algorithm: "bfs" | "dfs") => {
-    if (!startTile || !endTile) return; // Ensure start and end are set
+  const handleSearch = async (algorithm: "bfs" | "dfs") => {
+    if (!startTile || !endTile) return;
   
     console.log(`Running ${algorithm}...`);
   
-    const updatedGrid =
-      algorithm === "bfs"
-        ? bfs(grid, startTile, endTile)
-        : dfs(grid, startTile, endTile);
-  
-    setGrid(updatedGrid); // Update the grid after the search
+    if (algorithm === "bfs") {
+      await bfs(grid, startTile, endTile, setGrid);
+    } else {
+      await dfs(grid, startTile, endTile, setGrid);
+    }
   };
+  
   
 
   return (

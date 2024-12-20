@@ -12,7 +12,10 @@ const Tile: React.FC<TileProps> = ({ tile, onClick }) => {
   const getBackgroundColor = (): string => {
     if (tile.isStart) return "green"; // Start tile
     if (tile.isEnd) return "red";     // End tile
+    if (tile.isFrontier) return "#a9a9a9"; // Frontier tiles are blue
+    if (tile.isVisited) return "#5a5a5a"; // Visited tiles are light gray
     if (tile.isWall) return "black";  // Wall tile
+    if (tile.isPath) return "yellow"; // Highlight the shortest path
     return "white";                   // Default tile
   };
 
