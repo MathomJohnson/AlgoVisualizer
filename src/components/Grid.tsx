@@ -37,11 +37,15 @@ const Grid: React.FC = () => {
     )
   );
 
-  const [mode, setMode] = useState<"start" | "end" | null>(null);
+  const [mode, setMode] = useState<"start" | "end" | "placingWall" | null>(null);
 
   // To store the start and end tiles
   const [startTile, setStartTile] = useState<Tile | null>(null);
   const [endTile, setEndTile] = useState<Tile | null>(null);
+
+  // Wall Placing
+  //const [placingWall, setPlacingWall] = useState<true | false>(false);
+
 
   const handleTileClick = (row: number, col: number) => {
     setGrid((prevGrid) => {
@@ -62,6 +66,8 @@ const Grid: React.FC = () => {
         tile.isEnd = true;
         setEndTile(tile); // Store the end tile
         setMode(null);
+      } else if (mode === "placingWall") {
+        tile.isWall = true;
       }
 
       return newGrid;
@@ -88,6 +94,8 @@ const Grid: React.FC = () => {
       <div>
         <button onClick={() => setMode("start")}>Set Start</button>
         <button onClick={() => setMode("end")}>Set End</button>
+        <button onClick={() => setMode("placingWall")}>Enter Wall Placing</button>
+        <button onClick={() => setMode(null)}>Exit Wall Placing</button>
         <button onClick={() => handleSearch("bfs")}>Run BFS</button>
         <button onClick={() => handleSearch("dfs")}>Run DFS</button>
       </div>
