@@ -1,34 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Ensure content fits the viewport width */
+  box-sizing: border-box;
+}
+
 .grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .grid-row {
-    display: flex;
-  }
-  
-  .tile {
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-  }
-  
-  .tile.blocked {
-    background-color: #333;
-  }
-  
-  .tile.start {
-    background-color: #4caf50;
-  }
-  
-  .tile.end {
-    background-color: #f44336;
-  }
-  
-  .tile.regular {
-    background-color: #fff;
-  }
-  
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 0; /* Remove gaps between rows and columns */
+  width: 100vw; /* Full width of the viewport */
+  height: calc(20 * 20px); /* Ensure 20 rows of 20px height */
+}
+
+.grid > div {
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
+
+.grid > div.isStart {
+  background-color: green;
+}
+
+.grid > div.isEnd {
+  background-color: red;
+}
+
+.grid > div.isWall {
+  background-color: black;
+}
+
+.grid > div.isVisited {
+  background-color: lightblue;
+}
+
+.grid > div.isFrontier {
+  background-color: yellow;
+}
+
+.grid > div.isPath {
+  background-color: purple;
+}
