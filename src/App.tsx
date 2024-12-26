@@ -5,8 +5,7 @@ import Grid from './components/Grid';
 function App() {
 
   return (
-    <div>
-      <h1>Search Algorithm Visualizer</h1>
+    <div className="screen-wrapper">
       <Grid />
     </div>
   )

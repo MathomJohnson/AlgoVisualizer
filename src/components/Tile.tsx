@@ -23,8 +23,6 @@ const Tile: React.FC<TileProps> = ({ tile, onClick }) => {
     <div
       onClick={onClick}  // Handle click event
       style={{
-        width: 20,
-        height: 20,
         backgroundColor: getBackgroundColor(),  // Set background color
         border: "1px solid black",  // Border for each tile
       }}

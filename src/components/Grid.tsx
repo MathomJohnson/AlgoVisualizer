@@ -137,7 +137,7 @@ export interface Tile {
 
 const Grid: React.FC = () => {
   const rows = 20;
-  const [cols, setCols] = useState<number>(Math.floor(window.innerWidth / 20));
+  const [cols, setCols] = useState<number>(Math.floor(window.innerWidth / 30));
   const [grid, setGrid] = useState<Tile[][]>([]);
 
   const [mode, setMode] = useState<"start" | "end" | "placingWall" | null>(null);
@@ -146,7 +146,7 @@ const Grid: React.FC = () => {
 
   // Initialize the grid
   useEffect(() => {
-    const newCols = Math.floor(window.innerWidth / 20);
+    const newCols = Math.floor(window.innerWidth / 30);
     setCols(newCols);
     setGrid(
       Array.from({ length: rows }, (_, row) =>
@@ -169,7 +169,7 @@ const Grid: React.FC = () => {
   // Handle window resize to adjust the number of columns dynamically
   useEffect(() => {
     const handleResize = () => {
-      const newCols = Math.floor(window.innerWidth / 20);
+      const newCols = Math.floor(window.innerWidth / 30);
       setCols(newCols);
       setGrid((prevGrid) =>
         Array.from({ length: rows }, (_, row) =>
@@ -228,14 +228,16 @@ const Grid: React.FC = () => {
   };
 
   return (
-    <div>
-      <div>
-        <button onClick={() => setMode("start")}>Set Start</button>
-        <button onClick={() => setMode("end")}>Set End</button>
-        <button onClick={() => setMode("placingWall")}>Enter Wall Placing</button>
-        <button onClick={() => setMode(null)}>Exit Wall Placing</button>
-        <button onClick={() => handleSearch("bfs")}>Run BFS</button>
-        <button onClick={() => handleSearch("dfs")}>Run DFS</button>
+    <div style = {{ height: "100%", width: "100%" }}>
+      <div className="toolbar">
+        <h1>Search Algorithm Visualizer</h1>
+        <div className="buttons">
+          <button onClick={() => setMode("start")}>Set Start</button>
+          <button onClick={() => setMode("end")}>Set End</button>
+          <button onClick={() => setMode("placingWall")}>Walls</button>
+          <button onClick={() => handleSearch("bfs")}>Run BFS</button>
+          <button onClick={() => handleSearch("dfs")}>Run DFS</button>
+        </div>
       </div>
       <div className="grid" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
         {grid.map((row) =>
