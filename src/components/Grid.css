@@ -1,7 +1,14 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   width: 100%; /* Ensure content fits the viewport width */
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -11,7 +18,8 @@ html, body {
   padding: 0;
   gap: 0; /* Remove gaps between rows and columns */
   width: 100vw; /* Full width of the viewport */
-  height: calc(20 * 20px); /* Ensure 20 rows of 20px height */
+  height: 60vh;
+  /*height: calc(20 * 20px); /* Ensure 20 rows of 20px height */
 }
 
 .grid > div {
@@ -21,24 +29,119 @@ html, body {
   border: 1px solid #ccc;
 }
 
+/* Container for buttons and dropdown */
 .buttons {
   display: flex;
   justify-content: center;
-  margin: 20px;
-}
-
-.buttons > button {
+  align-items: center;  /* Vertically center all items */
   margin: 10px;
-  color: black;
-  background-color: #e6e7e8;
 }
 
+/* Ensuring uniform button and dropdown size */
+.buttons > button,
+.algoSelect {
+  height: 45px;  /* Ensure dropdown and buttons have the same height */
+  font-size: 16px;
+  line-height: 45px;  /* Vertically center the text inside */
+  padding: 0 15px; /* Set horizontal padding */
+  margin: 10px;
+  text-align: center; /* Make sure the text is centered */
+  border-radius: 8px;
+}
+
+/* Styling the dropdown */
+.algoSelect {
+  font-size: 16px;
+  border: 2px solid #007BFF;
+  background-color: #F8F9FA;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.algoSelect:hover {
+  border-color: #0056b3;
+  background-color: #E9ECEF;
+}
+
+/* Styling the run button */
+.runButton {
+  padding: 0 20px;
+  font-size: 16px;
+  background-color: #28A745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.runButton:hover {
+  background-color: #218838;
+}
+
+/* Style for individual buttons */
+.startButton:hover {
+  background-color: green;
+  color: white;
+  border-color: transparent;
+}
+
+.endButton:hover {
+  background-color: red;
+  color: white;
+  border-color: transparent;
+}
+
+.wallButton:hover {
+  background-color: black;
+  color: white;
+  border-color: transparent;
+}
+
+/* Toolbar container styling */
 .toolbar {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #f0f1f2;
-  width: 100vw;
+  height: 18vh;
+  align-items: center;  /* Vertically center the toolbar content */
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Page title */
+h1 {
+  font-family: Arial, sans-serif;
+  color: #696b6d;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  /* Page title */
+  h1 {
+    font-size: xx-large;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .buttons > button,
+  .algoSelect {
+    height: 40px;  /* Ensure dropdown and buttons have the same height */
+    font-size: 16px;
+    line-height: 40px;  /* Vertically center the text inside */
+    padding: 0 10px; /* Set horizontal padding */
+    text-align: center; /* Make sure the text is centered */
+    border-radius: 8px;
+  }
+
+  /* Container for buttons and dropdown */
+  .buttons {
+    flex-wrap: wrap;
+  }
+}
+
+.runButton:hover {
+  background-color: #218838;
 }
 
 .grid > div.isStart {
