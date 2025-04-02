@@ -30,6 +30,11 @@ const Grid: React.FC = () => {
   const [endTile, setEndTile] = useState<Tile | null>(null);
   const [selectedAlgo, setSelectedAlgo] = useState<"bfs" | "dfs" | "aStar" | "">(""); // State for selected algorithm
 
+  const canRunAlgorithm = startTile !== null && endTile !== null && selectedAlgo !== "";
+
+  const [isVisualized, setIsVisualized] = useState<boolean>(false);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+
   // Initialize the grid
   useEffect(() => {
     const newCols = Math.floor(window.innerWidth / 30);
@@ -100,8 +105,10 @@ const Grid: React.FC = () => {
         tile.isEnd = true;
         setEndTile(tile);
         setMode(null);
-      } else if (mode === "placingWall") {
-        tile.isWall = !tile.isWall;
+      } else if (mode === null) {
+        if (!tile.isStart && !tile.isEnd) {
+          tile.isWall = !tile.isWall;
+        }
       }
 
       return newGrid;
@@ -111,13 +118,70 @@ const Grid: React.FC = () => {
   const handleSearch = async (algorithm: "bfs" | "dfs" | "aStar") => {
     if (!startTile || !endTile) return;
 
-    if (algorithm === "bfs") {
-      await bfs(grid, startTile, endTile, setGrid);
-    } else if (algorithm === "dfs") {
-      await dfs(grid, startTile, endTile, setGrid);
-    } else if (algorithm === "aStar") {
-      await aStar(grid, startTile, endTile, setGrid);
+    setIsRunning(true);
+    setIsVisualized(true);
+
+    try {
+      if (algorithm === "bfs") {
+        await bfs(grid, startTile, endTile, setGrid);
+      } else if (algorithm === "dfs") {
+        await dfs(grid, startTile, endTile, setGrid);
+      } else if (algorithm === "aStar") {
+        await aStar(grid, startTile, endTile, setGrid);
+      } 
+    } finally {
+        // ADDED CODE START
+        setIsRunning(false);
+        // ADDED CODE END
+      }
+  };
+
+  const handleClear = () => {
+    if (isRunning) {
+      alert("Cannot clear while algorithm is running!");
+      return;
     }
+    setGrid((prevGrid) => {
+      // Create a new grid array to avoid mutating the original
+      return prevGrid.map((row) =>
+        row.map((tile) => ({
+          ...tile,
+          // Reset visualization states while preserving walls, start, and end positions
+          isVisited: false,
+          isFrontier: false, 
+          isPath: false,
+          distance: Infinity,
+          previousTile: null
+        }))
+      );
+    });
+    setIsVisualized(false); // Reset visualization state
+  };
+
+  const handleReset = () => {
+    if (isRunning) {
+      alert("Cannot reset while algorithm is running!");
+      return;
+    }
+    setGrid((prevGrid) => {
+      return prevGrid.map((row) =>
+        row.map((tile) => ({
+          row: tile.row,
+          col: tile.col,
+          isStart: false,
+          isEnd: false,
+          isWall: false,
+          isVisited: false,
+          isFrontier: false, 
+          isPath: false,
+          distance: Infinity,
+          previousTile: null
+        }))
+      );
+    });
+    setStartTile(null);
+    setEndTile(null);
+    setIsVisualized(false);
   };
 
   return (
@@ -127,7 +191,6 @@ const Grid: React.FC = () => {
         <div className="buttons">
           <button className="startButton" onClick={() => setMode("start")}>Set Start</button>
           <button className="endButton" onClick={() => setMode("end")}>Set End</button>
-          <button className="wallButton" onClick={() => setMode("placingWall")}>Walls</button>
           <select
             value={selectedAlgo}
             onChange={(e) => {
@@ -139,22 +202,32 @@ const Grid: React.FC = () => {
             className="algoSelect"
           >
             <option value="" disabled>Select Algorithm</option>
-            <option value="bfs">BFS</option>
-            <option value="dfs">DFS</option>
-            <option value="aStar">A*</option>
+            <option value="bfs"><b>BFS</b></option>
+            <option value="dfs"><b>DFS</b></option>
+            <option value="aStar"><b>A*</b></option>
           </select>
-          <button
-            onClick={() => {
-              if (selectedAlgo) {
-                handleSearch(selectedAlgo);
-              } else {
-                alert("Please select an algorithm first!");
-              }
-            }}
-            className="runButton"
-          >
-            Run
-          </button>
+          {!isVisualized ? (
+            <button
+              onClick={() => {
+                if (canRunAlgorithm) {
+                  handleSearch(selectedAlgo);
+                } else {
+                  alert("Please place start and end tiles and select an algorithm!");
+                }
+              }}
+              className="runButton"
+            >
+              Run
+            </button>
+          ) : (
+            <button
+              onClick={handleClear}
+              className="clearButton"
+            >
+              Clear
+            </button>
+          )}
+          <button className="resetButton" onClick={handleReset}>Reset</button>
         </div>
       </div>
       <div
