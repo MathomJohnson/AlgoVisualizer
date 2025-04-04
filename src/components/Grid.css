@@ -287,18 +287,14 @@ h1 {
   cursor: pointer;
   color: #666;
   padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+  margin: 0;
+  outline: none; /* Removes the outline when clicked */
+  font-family: Arial, sans-serif; /* Using a simple font */
+  line-height: 1; /* Ensures proper vertical alignment */
 }
 
 .close-button:hover {
-  background-color: #f0f0f0;
-  color: #333;
+  color: #333; /* Subtle color change on hover instead of background change */
 }
 
 .modal-content {
