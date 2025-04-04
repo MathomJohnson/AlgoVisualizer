@@ -35,6 +35,9 @@ const Grid: React.FC = () => {
   const [isVisualized, setIsVisualized] = useState<boolean>(false);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
+  // Add state for info modal
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+
   // Initialize the grid
   useEffect(() => {
     const newCols = Math.floor(window.innerWidth / 30);
@@ -62,6 +65,9 @@ const Grid: React.FC = () => {
   // Handle window resize to adjust the number of rows and columns dynamically
   useEffect(() => {
     const handleResize = () => {
+      // Skip resizing if algorithm is running
+      if (isRunning) return;
+
       const newCols = Math.floor(window.innerWidth / 30);
       const newRows = Math.floor((window.innerHeight * (100 - toolbarHeightVh) / 100) / 30);
       setCols(newCols);
@@ -88,7 +94,7 @@ const Grid: React.FC = () => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [isRunning]);
 
   const handleTileClick = (row: number, col: number) => {
     setGrid((prevGrid) => {
@@ -184,6 +190,11 @@ const Grid: React.FC = () => {
     setIsVisualized(false);
   };
 
+  // Toggle info modal
+  const toggleInfo = () => {
+    setShowInfo(!showInfo);
+  };
+
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <div className="toolbar" style={{ height: `${toolbarHeightVh}vh` }}>
@@ -224,10 +235,13 @@ const Grid: React.FC = () => {
               onClick={handleClear}
               className="clearButton"
             >
-              Clear
+              Reset
             </button>
           )}
-          <button className="resetButton" onClick={handleReset}>Reset</button>
+          <button className="resetButton" onClick={handleReset}>Clear</button>
+          <button className="infoButton" onClick={toggleInfo}>
+            <span>i</span>
+          </button>
         </div>
       </div>
       <div
@@ -247,6 +261,41 @@ const Grid: React.FC = () => {
           ))
         )}
       </div>
+      {/* Info Modal */}
+      {showInfo && (
+        <div className="modal-overlay" onClick={toggleInfo}>
+          <div className="info-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>How to Use This Visualizer</h2>
+              <button className="close-button" onClick={toggleInfo}>×</button>
+            </div>
+            <div className="modal-content">
+              <h3>Getting Started</h3>
+              <p>1. Click <b>Set Start</b> then click on a grid position to place the start point</p>
+              <p>2. Click <b>Set End</b> then click on a grid position to place the end point</p>
+              <p>3. Click anywhere on the grid to create walls (obstacles). Click on a wall to remove it.</p>
+              <p>4. Select an algorithm from the dropdown menu</p>
+              <p>5. Click <b>Run</b> to visualize the algorithm</p>
+              
+              <h3>Algorithms</h3>
+              <div className="algorithm-info">
+                <h4>Breadth-First Search (BFS)</h4>
+                <p>Explores all neighbor nodes at the present depth before moving to nodes at the next depth level. Guarantees the shortest path in an unweighted graph.</p>
+                
+                <h4>Depth-First Search (DFS)</h4>
+                <p>Explores as far as possible along each branch before backtracking. Does not guarantee the shortest path.</p>
+                
+                <h4>A* Search</h4>
+                <p>Uses a heuristic function (Manhattan distance) to guide the search toward the goal, combining both the cost to reach a node and the estimated cost to reach the goal from that node. Guarantees the shortest path and is generally more efficient than BFS.</p>
+              </div>
+              
+              <h3>Controls</h3>
+              <p><b>Reset</b>: Clears the visualization but keeps walls and start/end points</p>
+              <p><b>Clear</b>: Resets the entire grid to empty</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

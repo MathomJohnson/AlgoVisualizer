@@ -177,3 +177,186 @@ h1 {
 .grid > div.isPath {
   background-color: purple;
 }
+
+/* info modal */
+.infoButton:hover {
+  background-color: #0b7dda;
+  transform: scale(1.1);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Info Modal */
+/* Add these styles to your Grid.css file */
+
+/* Info Button */
+.infoButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+}
+
+.infoButton:hover {
+  background-color: #0b7dda;
+  transform: scale(1.1);
+}
+
+.infoButton span {
+  font-style: italic;    /* Make the "i" cursive/italic */
+  font-family: "Times New Roman", serif;  /* Optional: use a more cursive-looking font */
+  font-weight: bold;     /* Make it stand out */
+  line-height: 1; /* Prevents tall line spacing */
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Info Modal */
+.info-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 8px 8px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.modal-content {
+  padding: 20px;
+  color: #333;
+}
+
+.modal-content h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  color: #2196F3;
+}
+
+.modal-content h4 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #0b7dda;
+}
+
+.modal-content p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.algorithm-info {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+  border-left: 4px solid #2196F3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Make sure the info modal is responsive */
+@media (max-width: 768px) {
+  .info-modal {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .infoButton {
+    top: 10px;
+    right: 10px;
+  }
+}
