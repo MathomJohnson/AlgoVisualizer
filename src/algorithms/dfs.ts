@@ -3,7 +3,6 @@ import { Tile } from "../components/Grid";
 export const dfs = async (
   grid: Tile[][],
   start: Tile,
-  end: Tile,
   setGrid: React.Dispatch<React.SetStateAction<Tile[][]>>,
 ): Promise<void> => {
   const stack: Tile[] = [start];

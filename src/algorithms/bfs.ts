@@ -3,7 +3,6 @@ import { Tile } from "../components/Grid";
 export const bfs = async (
   grid: Tile[][],
   start: Tile,
-  end: Tile,
   setGrid: React.Dispatch<React.SetStateAction<Tile[][]>>,
 ): Promise<void> => {
   const queue: Tile[] = [start];

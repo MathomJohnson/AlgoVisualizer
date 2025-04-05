@@ -129,9 +129,9 @@ const Grid: React.FC = () => {
 
     try {
       if (algorithm === "bfs") {
-        await bfs(grid, startTile, endTile, setGrid);
+        await bfs(grid, startTile, setGrid);
       } else if (algorithm === "dfs") {
-        await dfs(grid, startTile, endTile, setGrid);
+        await dfs(grid, startTile, setGrid);
       } else if (algorithm === "aStar") {
         await aStar(grid, startTile, endTile, setGrid);
       } 
