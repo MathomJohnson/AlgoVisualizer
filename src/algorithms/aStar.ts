@@ -100,8 +100,8 @@ export async function aStar(
         (neighbor) =>
           neighbor && // Neighbor exists
           !neighbor.isWall && // Not a wall
-          !closedSet.has(neighbor) && // Not already visited
-          !openSet.includes(neighbor) // Not already in the openSet
+          !closedSet.has(neighbor) // Not already visited
+          //!openSet.includes(neighbor) // Not already in the openSet
       );
 
     for (const neighbor of neighbors) {
