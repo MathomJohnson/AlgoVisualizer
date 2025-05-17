@@ -5,6 +5,12 @@ import { aStar } from "../algorithms/aStar";
 import Tile from "./Tile";
 import "./Grid.css"; // Import CSS file
 
+// Add notification interface
+interface Notification {
+  message: string;
+  show: boolean;
+}
+
 export interface Tile {
   row: number;
   col: number;
@@ -20,6 +26,9 @@ export interface Tile {
 
 const Grid: React.FC = () => {
   const toolbarHeightVh = 18; // Toolbar height in vh
+
+  // Add notification state
+  const [notification, setNotification] = useState<Notification>({ message: "", show: false });
 
   const [rows, setRows] = useState<number>(0);
   const [cols, setCols] = useState<number>(Math.floor(window.innerWidth / 30));
@@ -128,18 +137,24 @@ const Grid: React.FC = () => {
     setIsVisualized(true);
 
     try {
+      let pathLength: number | null = null;
       if (algorithm === "bfs") {
-        await bfs(grid, startTile, setGrid);
+        pathLength = await bfs(grid, startTile, setGrid);
       } else if (algorithm === "dfs") {
-        await dfs(grid, startTile, setGrid);
+        pathLength = await dfs(grid, startTile, setGrid);
       } else if (algorithm === "aStar") {
-        await aStar(grid, startTile, endTile, setGrid);
-      } 
-    } finally {
-        // ADDED CODE START
-        setIsRunning(false);
-        // ADDED CODE END
+        pathLength = await aStar(grid, startTile, endTile, setGrid);
       }
+      
+      if (pathLength !== null) {
+        setNotification({
+          message: `${algorithm.toUpperCase()} found a path of length ${pathLength}!`,
+          show: true
+        });
+      }
+    } finally {
+      setIsRunning(false);
+    }
   };
 
   const handleClear = () => {
@@ -195,10 +210,28 @@ const Grid: React.FC = () => {
     setShowInfo(!showInfo);
   };
 
+  // Add close notification handler
+  const handleCloseNotification = () => {
+    setNotification({ message: "", show: false });
+  };
+
   return (
     <div style={{ height: "100%", width: "100%" }}>
+      {/* Update notification component */}
+      {notification.show && (
+        <div className="notification">
+          {notification.message}
+          <button 
+            className="notification-close" 
+            onClick={handleCloseNotification}
+            aria-label="Close notification"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="toolbar" style={{ height: `${toolbarHeightVh}vh` }}>
-        <h1 className="title">Search Algorithm Visualizer</h1>
+        <h1 className="title">AlgoVisualizer</h1>
         <div className="buttons">
           <button className="startButton" onClick={() => setMode("start")}>Set Start</button>
           <button className="endButton" onClick={() => setMode("end")}>Set End</button>

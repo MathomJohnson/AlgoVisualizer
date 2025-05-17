@@ -60,7 +60,7 @@ export async function aStar(
   start: Tile,
   end: Tile,
   setGrid: Function
-) {
+): Promise<number | null> {
   const heuristic = (tile: Tile) =>
     Math.abs(tile.row - end.row) + Math.abs(tile.col - end.col); // Manhattan Distance
 
@@ -82,8 +82,8 @@ export async function aStar(
     // If we've reached the end tile, stop searching
     if (current.row === end.row && current.col === end.col) {
       console.log("End tile found!");
-      end = current;
-      break;
+      const pathLength = await showShortestPath(grid, current, setGrid);
+      return pathLength;
     }
 
     closedSet.add(current);
@@ -101,7 +101,6 @@ export async function aStar(
           neighbor && // Neighbor exists
           !neighbor.isWall && // Not a wall
           !closedSet.has(neighbor) // Not already visited
-          //!openSet.includes(neighbor) // Not already in the openSet
       );
 
     for (const neighbor of neighbors) {
@@ -121,23 +120,31 @@ export async function aStar(
     await new Promise((resolve) => setTimeout(resolve, 100)); // Small delay for animation
   }
 
-  // Trace the final path from the end tile back to the start
-  let path = end;
-  if (path.previousTile === null) {
-    console.log("No path found!");
-    return; // If there is no path, exit
-  }
-
-  while (path.previousTile) {
-    path.isPath = true; // Mark as part of the final path
-    path.isVisited = false; // Remove visited state for the path
-
-    setGrid([...grid]); // Update the grid visually
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Small delay for animation
-
-    path = path.previousTile; // Move to the previous tile
-  }
-
-  setGrid([...grid]); // Final update to reflect the path
+  console.log("No path found!");
+  return null;
 }
+
+const showShortestPath = async (
+  grid: Tile[][],
+  end: Tile,
+  setGrid: Function
+): Promise<number> => {
+  let currentTile: Tile | null = end;
+  let pathLength = 0;
+
+  while (currentTile && currentTile.previousTile) {
+    currentTile.isPath = true; // Mark this tile as part of the path
+    currentTile.isVisited = false;
+    currentTile.isFrontier = false;
+    pathLength++;
+
+    // Update grid to reflect the path visually
+    setGrid([...grid]);
+    await new Promise((resolve) => setTimeout(resolve, 100)); // Add delay for visualization
+
+    currentTile = currentTile.previousTile; // Move to the previous tile
+  }
+
+  return pathLength;
+};
 

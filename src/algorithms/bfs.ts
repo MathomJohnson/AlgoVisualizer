@@ -4,7 +4,7 @@ export const bfs = async (
   grid: Tile[][],
   start: Tile,
   setGrid: React.Dispatch<React.SetStateAction<Tile[][]>>,
-): Promise<void> => {
+): Promise<number | null> => {
   const queue: Tile[] = [start];
   const visited: Set<string> = new Set();
 
@@ -28,13 +28,13 @@ export const bfs = async (
 
     if (tile.isEnd) {
       console.log("End tile found!");
-      await showShortestPath(grid, tile, setGrid); // Call path visualization function
-      break; // Found the end
+      const pathLength = await showShortestPath(grid, tile, setGrid); // Call path visualization function
+      return pathLength; // Return the path length
     }
 
     // Update grid state to reflect the visited tile
     setGrid([...grid]);
-    await new Promise((resolve) => setTimeout(resolve, 150)); // Add delay (100ms)
+    await new Promise((resolve) => setTimeout(resolve, 60)); // Add delay (100ms)
 
     const directions = [
       { row: -1, col: 0 },
@@ -66,10 +66,11 @@ export const bfs = async (
 
     // Update grid state to reflect the frontier tiles
     setGrid([...grid]);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Add delay (100ms)
+    await new Promise((resolve) => setTimeout(resolve, 60)); // Add delay (100ms)
   }
 
-  console.log("Pathfinding complete!");
+  console.log("No path found!");
+  return null;
 };
 
 
@@ -77,13 +78,15 @@ const showShortestPath = async (
   grid: Tile[][],
   end: Tile,
   setGrid: React.Dispatch<React.SetStateAction<Tile[][]>>
-): Promise<void> => {
+): Promise<number> => {
   let currentTile: Tile | null = end;
+  let pathLength = 0;
 
   while (currentTile && currentTile.previousTile) {
     currentTile.isPath = true; // Mark this tile as part of the path
     currentTile.isVisited = false;
     currentTile.isFrontier = false;
+    pathLength++;
 
     // Update grid to reflect the path visually
     setGrid([...grid]);
@@ -91,4 +94,6 @@ const showShortestPath = async (
 
     currentTile = currentTile.previousTile; // Move to the previous tile
   }
+
+  return pathLength;
 };
