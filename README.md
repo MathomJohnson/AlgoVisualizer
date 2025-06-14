@@ -1,50 +1,39 @@
-# React + TypeScript + Vite
+# AlgoVisualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AlgoVisualizer is a React + TypeScript web application that lets you explore classic pathfinding algorithms in real time. I built the core algorithms myself as a way to truly understand how they work under the hood. You can place start and end points, draw walls to create obstacles, and then watch how each algorithm searches for a path on the grid.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive grid** – click to set the start tile, end tile, and walls.
+- **Algorithm choices** – visualize Breadth‑First Search, Depth‑First Search, or the A* algorithm.
+- **Step‑by‑step animation** – see nodes as they are visited and watch the final shortest path appear.
+- **Notifications** – get feedback on the path length found by each algorithm.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```bash
+# install dependencies
+npm install
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# run in development mode
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Open your browser to `http://localhost:5173` (or whatever port Vite shows) and start placing tiles. Make sure to choose an algorithm before clicking **Run**.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+To create a production build:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run build
 ```
+
+You can check your code style with:
+
+```bash
+npm run lint
+```
+
+## Why I Built It
+
+Implementing BFS, DFS, and A* completely from scratch taught me a lot about data structures and problem solving. Seeing the algorithms animate on screen makes the concepts much clearer than reading about them alone. I hope this project helps anyone else learning these fundamental techniques.
+
